@@ -35,6 +35,10 @@ export default function RegisterForm() {
         <Input type="password" placeholder="Password" register={register} name="password" required />
         {errors.password && (<p className="text-red-500 text-sm"> Password is required</p>)}
       </div>
+      <div className="flex gap-2">
+        <Input type="text" placeholder="Phone Number 1" register={register} name="phone1"/>
+        <Input type="text" placeholder="Phone Number 2 (optional)" register={register} name="phone2"/>
+      </div>
       <Button text="Sign Up" />
     </form>
   )
