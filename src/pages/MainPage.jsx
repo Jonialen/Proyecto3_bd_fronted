@@ -5,7 +5,7 @@ export default function MainPage() {
   return (
     <div className='h-screen flex flex-col'>
         <NavBar/>
-        <img src="/soccer_field.jpg" alt="img" className='flex-1 object-cover w-full'/>
+        <img src="/soccer_field.jpg" alt="img" className='flex-1 object-cover w-full h-[70dvh]'/>
     </div>
   )
 }

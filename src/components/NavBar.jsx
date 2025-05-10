@@ -8,9 +8,9 @@ function NavBar() {
         <nav className="mb-4 flex justify-around items-center">
           <Link to="/bookings" className="bg-[#34392d] text-white px-4 py-2 rounded-md my-2 hover:bg-[#94a983]">Reservas</Link>
           <Link to="/revenues" className="bg-[#34392d] text-white px-4 py-2 rounded-md my-2 hover:bg-[#94a983]">Ingresos</Link>
-          <Link to="/users" className="bg-[#34392d] text-white px-4 py-2 rounded-md my-2 hover:bg-[#94a983]">Usuarios Frecuentes</Link>
+          <Link to="/users" className="bg-[#34392d] text-white px-4 py-2 rounded-md my-2 hover:bg-[#94a983]">Usuarios</Link>
           <Link to="/promotions" className="bg-[#34392d] text-white px-4 py-2 rounded-md my-2 hover:bg-[#94a983]">Promociones</Link>
-          <Link to="/availability" className="bg-[#34392d] text-white px-4 py-2 rounded-md my-2 hover:bg-[#94a983]">Disponibilidad</Link>
+          <Link to="/availability" className="bg-[#34392d] text-white px-4 py-2 rounded-md my-2 hover:bg-[#94a983]">Canchas</Link>
         </nav>
     </div>
   )
