@@ -24,6 +24,9 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Listar archivos de build (debug)
+        run: ls -l build/
+
       - name: Clean remote folder before deploy
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -42,4 +45,3 @@ jobs:
           source: "build/*"
           target: "/home/azureuser/proyectoBD/frontend"
           strip_components: 1
-
