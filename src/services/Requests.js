@@ -71,6 +71,15 @@ export const getBookingsByPromotion  = async () => {
   }
 }
 
+export const getCourtsMostBookings  = async () => {
+  try {
+    const response = await axios.get('/reports/canchas-mas-rentadas'); 
+    return response.data.data
+  } catch (error) {
+    console.error('Error al obtener canchas mas rentadas:', error);
+    throw error;
+  }
+}
 
 
 
