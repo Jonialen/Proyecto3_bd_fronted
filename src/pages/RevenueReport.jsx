@@ -20,7 +20,7 @@ export default function RevenueReport() {
     // } catch (error) {
     //   console.error("Error al buscar reservas:", error);
     // }
-};
+  };
 
   return (
     <div className="m-[25px]">
@@ -64,9 +64,9 @@ export default function RevenueReport() {
               >
               <option value="">Horarios</option>
                 {schedules.map((schedule) => (
-                    <option key={schedule.id_type} value={schedule.type_name}>
-                    {schedule.type_name}
-                    </option>
+                  <option key={schedule.id_type} value={schedule.type_name}>
+                  {schedule.type_name}
+                  </option>
                 ))}
             </select>
           </div>

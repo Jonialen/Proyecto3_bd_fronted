@@ -42,6 +42,16 @@ export const getRevenuesByCourtType = async () => {
 }
 
 
+export const getUsersMostBookings  = async () => {
+  try {
+    const response = await axios.get('/reports/usuarios-con-mas-reservas'); 
+    return response.data.data
+  } catch (error) {
+    console.error('Error al obtener usuarios con mas reservas:', error);
+    throw error;
+  }
+}
+
 
 
 
