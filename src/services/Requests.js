@@ -21,5 +21,27 @@ export const getBookingsByCourt = async () =>  {
   }
 }
 
+export const getSchedulesFilter = async () => {
+  try {
+    const response = await axios.get('/reports/reservas-por-tipo-cancha'); //cambiar ruta
+    return response.data.data
+  } catch (error) {
+    console.error('Error al obtener horarios:', error);
+    throw error;
+  }
+}
+
+export const getRevenuesByCourtType = async () => {
+  try {
+    const response = await axios.get('/reports/facturacion-por-tipo-cancha'); 
+    return response.data.data
+  } catch (error) {
+    console.error('Error al obtener ingresos por cancha:', error);
+    throw error;
+  }
+}
+
+
+
 
 

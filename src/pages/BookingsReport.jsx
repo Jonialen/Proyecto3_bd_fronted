@@ -1,5 +1,4 @@
 import {  useEffect , useState } from "react";
-import { getCourtTypes } from "../services/Requests";
 import NavBar from "../components/NavBar";
 import BookCard from "../components/BookCard";
 import bookingsByCourt from "../hooks/bookings";
@@ -8,18 +7,11 @@ import filters from "../hooks/filters";
 function BookingsReport() {
     const [bookings, setBookings] = useState([]);
     const { courts } = bookingsByCourt();
-    const {courtType } = filters();
+    const {courtType, allFilters, setFilters } = filters();
 
-    const [filtro, setFilters] = useState({
-        fechaInicio: "",
-        fechaFin: "",
-        estado: "",
-        tipoCancha: "",
-    });
-
-      
+  
     const handleChange = (e) => {
-      setFilters({ ...filtro, [e.target.name]: e.target.value });
+      setFilters({ ...allFilters, [e.target.name]: e.target.value });
     };
     
     const handleSearch = async () => {
@@ -41,21 +33,21 @@ function BookingsReport() {
                 <input
                 name="fechaInicio"
                 type="date"
-                value={filtro.fechaInicio}
+                value={allFilters.startDate}
                 onChange={handleChange}
                 className="border p-2"
                 />
                 <input
                 name="fechaFin"
                 type="date"
-                value={filtro.fechaFin}
+                value={allFilters.endDate}
                 onChange={handleChange}
                 className="border p-2"
                 />
     
                 <select
                 name="estado"
-                value={filtro.estado}
+                value={allFilters.status}
                 onChange={handleChange}
                 className="border p-2"
                 >
@@ -67,7 +59,7 @@ function BookingsReport() {
     
                 <select
                 name="tipoCancha"
-                value={filtro.tipoCancha}
+                value={allFilters.courtTypes}
                 onChange={handleChange}
                 className="border p-2"
                 >
@@ -86,26 +78,26 @@ function BookingsReport() {
             <div className="mt-6">
               <h3 className="font-semibold mb-2">Resultados</h3>
               <table className="w-full border">
-              <thead>
+                <thead>
                   <tr className="bg-gray-100">
-                  <th className="border p-2">Usuario</th>
-                  <th className="border p-2">Fecha de reserva</th>
-                  <th className="border p-2">Estado</th>
-                  <th className="border p-2">Tipo de cancha</th>
+                    <th className="border p-2">Usuario</th>
+                    <th className="border p-2">Fecha de reserva</th>
+                    <th className="border p-2">Estado</th>
+                    <th className="border p-2">Tipo de cancha</th>
                   </tr>
-              </thead>
-              <tbody>
-                {bookings.map((booking) => (
-                <tr key={booking.id_booking}>
-                    <td className="border p-2">
-                    {booking.usuario_nombre} {booking.usuario_apellido}
-                    </td>
-                    <td className="border p-2">{booking.booking_date}</td>
-                    <td className="border p-2">{booking.status}</td>
-                    <td className="border p-2">{booking.tipo_cancha}</td>
-                </tr>
-                ))}
-              </tbody>
+                </thead>
+                <tbody>
+                  {bookings.map((booking) => (
+                  <tr key={booking.id_booking}>
+                      <td className="border p-2">
+                      {booking.usuario_nombre} {booking.usuario_apellido}
+                      </td>
+                      <td className="border p-2">{booking.booking_date}</td>
+                      <td className="border p-2">{booking.status}</td>
+                      <td className="border p-2">{booking.tipo_cancha}</td>
+                  </tr>
+                  ))}
+                </tbody>
               </table>
             </div>
           </div>
