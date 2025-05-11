@@ -24,6 +24,9 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Listar archivos de build (debug)
+        run: ls -l dist/
+
       - name: Clean remote folder before deploy
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -31,7 +34,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            rm -rf /home/azureuser/proyectoBD/frontend/*
+            sudo rm -rf /home/azureuser/proyectoBD/frontend/*
 
       - name: Copy files via SSH
         uses: appleboy/scp-action@v0.1.7
@@ -39,7 +42,6 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "build/*"
+          source: "dist/*"
           target: "/home/azureuser/proyectoBD/frontend"
           strip_components: 1
-
