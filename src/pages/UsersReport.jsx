@@ -1,11 +1,11 @@
 import {  useEffect , useState } from "react";
 import NavBar from "../components/NavBar";
-import filters from "../hooks/filters";
+import useFilters from "../hooks/useFilters";
 import usersMostBookings from "../hooks/users";
 import UserCard from "../components/UserCard";
 
 export default function UsersReport() {
-  const { schedules, allFilters, setFilters } = filters();
+  const { schedules, allFilters, setFilters } = useFilters();
   const { usersBookings } = usersMostBookings();
   const [users, setUsers] = useState([]);
 
@@ -51,8 +51,8 @@ export default function UsersReport() {
             >
             <option value="">Horarios</option>
               {schedules.map((schedule) => (
-                <option key={schedule.id_type} value={schedule.type_name}>
-                {schedule.type_name}
+                <option key={schedule.nombre} value={schedule.nombre}>
+                {schedule.nombre}
                 </option>
               ))}
             </select>

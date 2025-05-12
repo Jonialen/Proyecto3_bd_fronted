@@ -1,7 +1,7 @@
-import { getRevenuesByCourtType } from "../services/Requests";
+import { getRevenuesByCourtType, getRevenues } from "../services/Requests";
 import { useEffect, useState } from 'react';
 
-export default function revenuesByCourt() {
+export function useRevenuesByCourt() {
     const [courts, setCourts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -14,6 +14,16 @@ export default function revenuesByCourt() {
     }, []);
   
     return { courts, loading, error };
+}
+
+export async function getRevenuesReport(filters) {
+    try {
+      const data = await getRevenues(filters);
+      return data;
+    } catch (error) {
+      console.error("Error al buscar ingresos:", error);
+      return [];
+    }
 }
 
 

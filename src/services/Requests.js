@@ -13,7 +13,7 @@ export const getCourtTypes = async () => {
 
 export const getPromosFilter = async () => {
   try {
-    const response = await axios.get('/court-types'); //cambiar ruta
+    const response = await axios.get('/promociones'); 
     return response.data.data;
   } catch (error) {
     console.error('Error fetching court types:', error);
@@ -23,7 +23,7 @@ export const getPromosFilter = async () => {
 
 export const getSchedulesFilter = async () => {
   try {
-    const response = await axios.get('/court-types'); //cambiar ruta
+    const response = await axios.get('/get_horarios'); 
     return response.data.data
   } catch (error) {
     console.error('Error al obtener horarios:', error);
@@ -31,6 +31,7 @@ export const getSchedulesFilter = async () => {
   }
 }
 
+//Para la informacion adicional de reportes
 export const getBookingsByCourt = async () =>  {
   try {
     const response = await axios.get('/reports/reservas-por-tipo-cancha');
@@ -81,6 +82,79 @@ export const getCourtsMostBookings  = async () => {
   }
 }
 
+
+//Para los resultados
+export const getBookings = async (filters) => {
+  try {
+    const params = {};
+    if (filters.startDate?.trim()) params.fecha_inicio = filters.startDate;
+    if (filters.endDate?.trim()) params.fecha_fin = filters.endDate;
+    if (filters.courtTypes?.trim()) params.canchas_tipo = parseInt(filters.courtTypes, 10);
+    if (filters.status?.trim()) params.estado = filters.status;
+
+    const response = await axios.get('/reservas', {params}); 
+    return response.data.data
+  } catch (error) {
+    console.error('Error al obtener reservas:', error);
+    throw error;
+  }
+}
+
+export const getRevenues = async (filters) => {
+  try {
+    const params = {};
+    if (filters.startDate?.trim()) params.fecha_inicio = filters.startDate;
+    if (filters.endDate?.trim()) params.fecha_fin = filters.endDate;
+    if (filters.dateGroup?.trim()) params.agrupar = filters.dateGroup;
+    if (filters.courtTypes?.trim()) params.cancha_tipo = parseInt(filters.courtTypes, 10);
+
+    const response = await axios.get('/ingresos', {params}); 
+    return response.data.data
+  } catch (error) {
+    console.error('Error al obtener ingresos:', error);
+    throw error;
+  }
+}
+
+export const getUsers = async () => {
+  try {
+    const response = await axios.get('/usuarios'); 
+    return response.data.data
+  } catch (error) {
+    console.error('Error al obtener usuarios:', error);
+    throw error;
+  }
+}
+
+export const getCantBooking = async () => {
+  try {
+    const response = await axios.get('/cuantas-veces'); 
+    return response.data.data
+  } catch (error) {
+    console.error('Error al obtener cuantas veces:', error);
+    throw error;
+  }
+}
+
+export const getPromosApplied = async () => {
+  try {
+    const response = await axios.get('/promociones-aplicadas'); 
+    return response.data.data
+  } catch (error) {
+    console.error('Error al obtener promos aplicadas:', error);
+    throw error;
+  }
+}
+
+export const getCourts = async () => {
+  try {
+    const response = await axios.get('/disponibilidad-canchas'); 
+    return response.data.data
+  } catch (error) {
+    console.error('Error al obtener canchas:', error);
+    throw error;
+  }
+}
 
 
 

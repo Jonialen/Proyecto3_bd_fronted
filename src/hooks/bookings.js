@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { getBookingsByCourt } from '../services/Requests';
+import { getBookingsByCourt, getBookings } from '../services/Requests';
 
 
-export default function bookingsByCourt() {
+export function useBookingsByCourt() {
     const [courts, setCourts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -17,6 +17,16 @@ export default function bookingsByCourt() {
     return { courts, loading, error };
 }
 
-export function getBookingReport(){
-
+export async function getBookingReport(filters) {
+    try {
+      const data = await getBookings(filters);
+      return data;
+    } catch (error) {
+      console.error("Error al buscar reservas:", error);
+      return [];
+    }
 }
+  
+
+
+  

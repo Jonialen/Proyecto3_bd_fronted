@@ -1,8 +1,7 @@
-//Endpoints para sacar info para los filtros
 import { useEffect, useState } from 'react';
 import { getCourtTypes, getSchedulesFilter, getPromosFilter } from "../services/Requests";
 
-export default function filters() {
+export default function useFilters() {
     const [courtType, setCourtType] = useState([]);
     const [schedules, setSchedules] = useState([]);
     const [promos, setPromos] = useState([]);
@@ -16,6 +15,7 @@ export default function filters() {
         schedule: "",
         cantBooking: "",
         promoName: "",
+        dateGroup: "",
     });
     
     useEffect(() => {

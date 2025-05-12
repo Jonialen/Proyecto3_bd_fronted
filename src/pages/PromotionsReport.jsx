@@ -1,12 +1,12 @@
 import bookingsByPromotion from "../hooks/promotions"
 import {  useEffect , useState } from "react";
 import PromoCard from "../components/PromoCard";
-import filters from "../hooks/filters";
+import useFilters from "../hooks/useFilters";
 import NavBar from "../components/NavBar";
 
 export default function PromotionsReport() {
   const {bookingPromotion} = bookingsByPromotion();
-  const {promos, allFilters, setFilters } = filters();
+  const {promos, allFilters, setFilters } = useFilters();
 
   const handleChange = (e) => {
     setFilters({ ...allFilters, [e.target.name]: e.target.value });
@@ -26,7 +26,7 @@ export default function PromotionsReport() {
       <NavBar/>
       <div className="flex mt-4 gap-4">
         <div className="mt-[25px] w-3/4">
-          <h2 className="text-xl font-semibold mb-4">Reporte de promociones</h2>
+          <h2 className="text-xl font-semibold mb-4">Reporte de Promociones</h2>
           <div className="flex gap-4 mb-4">
             <select
               name="tipoPromocion"
@@ -36,8 +36,8 @@ export default function PromotionsReport() {
               >
               <option value="">Promocion</option>
                 {promos.map((type) => (
-                  <option key={type.id_type} value={type.type_name}>
-                  {type.type_name}
+                  <option key={type.name} value={type.name}>
+                  {type.name}
                   </option>
                 ))}
             </select>
@@ -93,8 +93,8 @@ export default function PromotionsReport() {
               >
               <option value="">Promocion</option>
                 {promos.map((type) => (
-                    <option key={type.id_type} value={type.type_name}>
-                    {type.type_name}
+                    <option key={type.name} value={type.name}>
+                    {type.name}
                     </option>
                 ))}
               </select>

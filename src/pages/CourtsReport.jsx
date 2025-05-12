@@ -1,11 +1,11 @@
 import {  useEffect , useState } from "react";
 import NavBar from "../components/NavBar";
-import filters from "../hooks/filters";
+import useFilters from "../hooks/useFilters";
 import courtsMostBookings from "../hooks/courts";
 import CourtCard from "../components/CourtCard";
 
 export default function CourtsReport() {
-  const { courtType, schedules, allFilters, setFilters } = filters();
+  const { courtType, schedules, allFilters, setFilters } = useFilters();
   const {bookingCourts} = courtsMostBookings();
 
   const handleChange = (e) => {
@@ -26,7 +26,7 @@ export default function CourtsReport() {
       <NavBar/>
       <div className="flex mt-4 gap-4">
         <div className="mt-[25px] w-3/4">
-          <h2 className="text-xl font-semibold mb-4">Reporte de canchas</h2>
+          <h2 className="text-xl font-semibold mb-4">Reporte de Canchas</h2>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <input
             name="fechaInicio"
@@ -63,8 +63,8 @@ export default function CourtsReport() {
               >
               <option value="">Horarios</option>
                 {schedules.map((schedule) => (
-                  <option key={schedule.id_type} value={schedule.type_name}>
-                  {schedule.type_name}
+                  <option key={schedule.nombre} value={schedule.nombre}>
+                  {schedule.nombre}
                   </option>
                 ))}
             </select>

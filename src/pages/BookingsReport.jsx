@@ -1,26 +1,27 @@
-import {  useEffect , useState } from "react";
+import { useState } from "react";
 import NavBar from "../components/NavBar";
 import BookCard from "../components/BookCard";
-import bookingsByCourt from "../hooks/bookings";
-import filters from "../hooks/filters";
+import {useBookingsByCourt, getBookingReport} from "../hooks/bookings";
+import useFilters from "../hooks/useFilters";
 
 function BookingsReport() {
   const [bookings, setBookings] = useState([]);
-  const { courts } = bookingsByCourt();
-  const {courtType, allFilters, setFilters } = filters();
+  const { courts } = useBookingsByCourt();
+  const {courtType, allFilters, setFilters } = useFilters();
 
 
   const handleChange = (e) => {
     setFilters({ ...allFilters, [e.target.name]: e.target.value });
   };
-  
+
   const handleSearch = async () => {
-      // try {
-      //   const data = await getBookingReports(filters);
-      //   setReservas(data);
-      // } catch (error) {
-      //   console.error("Error al buscar reservas:", error);
-      // }
+    console.log("Filtros actuales:", allFilters);
+    try {
+      const data = await getBookingReport(allFilters);
+      setBookings(data);
+    } catch (error) {
+      console.error("Error al buscar reservas:", error);
+    }
   };
   
   return (
@@ -29,16 +30,17 @@ function BookingsReport() {
       <div className="flex mt-4 gap-4">
         <div className="mt-[25px] w-3/4">
           <h2 className="text-xl font-semibold mb-4">Reporte de Reservas</h2>
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <p>*Las fechas son desde: 05/10/2025 hasta: 22/10/2025</p>
+          <div className="grid grid-cols-2 gap-4 my-4">
               <input
-              name="fechaInicio"
+              name="startDate"
               type="date"
               value={allFilters.startDate}
               onChange={handleChange}
               className="border p-2"
               />
               <input
-              name="fechaFin"
+              name="endDate"
               type="date"
               value={allFilters.endDate}
               onChange={handleChange}
@@ -46,26 +48,26 @@ function BookingsReport() {
               />
   
               <select
-              name="estado"
+              name="status"
               value={allFilters.status}
               onChange={handleChange}
               className="border p-2"
               >
               <option value="">Estado</option>
-              <option value="pendiente">Pendiente</option>
-              <option value="confirmada">Confirmada</option>
-              <option value="cancelada">Cancelada</option>
+              <option value="pending">Pendiente</option>
+              <option value="confirmed">Confirmada</option>
+              <option value="cancelled">Cancelada</option>
               </select>
   
-              <select
-              name="tipoCancha"
+              <select 
+              name="courtTypes"
               value={allFilters.courtTypes}
               onChange={handleChange}
               className="border p-2"
               >
               <option value="">Tipo de cancha</option>
                 {courtType.map((type) => (
-                    <option key={type.id_type} value={type.type_name}>
+                    <option key={type.id_type} value={type.id_type}>
                     {type.type_name}
                     </option>
                 ))}
@@ -81,19 +83,17 @@ function BookingsReport() {
               <thead>
                 <tr className="bg-gray-100">
                   <th className="border p-2">Usuario</th>
-                  <th className="border p-2">Fecha de reserva</th>
+                  <th className="border p-2">ID reserva</th>
                   <th className="border p-2">Estado</th>
                   <th className="border p-2">Tipo de cancha</th>
                 </tr>
               </thead>
               <tbody>
                 {bookings.map((booking) => (
-                <tr key={booking.id_booking}>
-                    <td className="border p-2">
-                    {booking.usuario_nombre} {booking.usuario_apellido}
-                    </td>
-                    <td className="border p-2">{booking.booking_date}</td>
-                    <td className="border p-2">{booking.status}</td>
+                <tr key={booking.id_reserva}>
+                    <td className="border p-2">{booking.nombre_usuario}</td>
+                    <td className="border p-2">{booking.id_reserva}</td>
+                    <td className="border p-2">{booking.estado}</td>
                     <td className="border p-2">{booking.tipo_cancha}</td>
                 </tr>
                 ))}
