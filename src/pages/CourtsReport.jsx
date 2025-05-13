@@ -1,24 +1,25 @@
-import {  useEffect , useState } from "react";
+import { useState } from "react";
 import NavBar from "../components/NavBar";
 import useFilters from "../hooks/useFilters";
-import courtsMostBookings from "../hooks/courts";
+import {useCourtsMostBookings, getCourtsReport }from "../hooks/courts";
 import CourtCard from "../components/CourtCard";
 
 export default function CourtsReport() {
   const { courtType, schedules, allFilters, setFilters } = useFilters();
-  const {bookingCourts} = courtsMostBookings();
+  const {bookingCourts} = useCourtsMostBookings();
+  const [courts, setCourts] = useState([]);
 
   const handleChange = (e) => {
     setFilters({ ...allFilters, [e.target.name]: e.target.value });
   };
 
   const handleSearch = async () => {
-    // try {
-    //   const data = await getBookingReports(filters);
-    //   setReservas(data);
-    // } catch (error) {
-    //   console.error("Error al buscar reservas:", error);
-    // }
+    try {
+      const data = await getCourtsReport(allFilters);
+      setCourts(data);
+    } catch (error) {
+      console.error("Error al buscar canchas:", error);
+    }
   };
 
   return (
@@ -27,44 +28,45 @@ export default function CourtsReport() {
       <div className="flex mt-4 gap-4">
         <div className="mt-[25px] w-3/4">
           <h2 className="text-xl font-semibold mb-4">Reporte de Canchas</h2>
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <p>*Las fechas son desde: 05/10/2025 hasta: 22/10/2025</p>
+          <div className="grid grid-cols-2 gap-4 my-4">
             <input
-            name="fechaInicio"
+            name="startDate"
             type="date"
             value={allFilters.startDate}
             onChange={handleChange}
             className="border p-2"
             />
             <input
-            name="fechaFin"
+            name="endDate"
             type="date"
             value={allFilters.endDate}
             onChange={handleChange}
             className="border p-2"
             />
             <select
-              name="tipoCancha"
+              name="courtTypes"
               value={allFilters.courtTypes}
               onChange={handleChange}
               className="border p-2"
               >
               <option value="">Tipo de cancha</option>
                 {courtType.map((type) => (
-                    <option key={type.id_type} value={type.type_name}>
+                    <option key={type.id_type} value={type.id_type}>
                     {type.type_name}
                     </option>
                 ))}
             </select>
             <select
-              name="horario"
+              name="schedule"
               value={allFilters.schedule}
               onChange={handleChange}
-              className="border p-2"
+              className="border p-2" 
               >
               <option value="">Horarios</option>
                 {schedules.map((schedule) => (
                   <option key={schedule.nombre} value={schedule.nombre}>
-                  {schedule.nombre}
+                  {schedule.nombre}: {schedule.inicio}-{schedule.fin}
                   </option>
                 ))}
             </select>
@@ -84,15 +86,13 @@ export default function CourtsReport() {
                 </tr>
               </thead>
               <tbody>
-                {/* {users.map((user) => (
-                <tr key={user.id_booking}>
-                    <td className="border p-2">
-                    {user.usuario_nombre} {user.usuario_apellido}
-                    </td>
-                    <td className="border p-2">{user.booking_date}</td>
-                    <td className="border p-2">{user.status}</td>
+                {courts.map((court) => (
+                <tr key={court.id_court}>
+                    <td className="border p-2">{court.id_court}</td>
+                    <td className="border p-2">{court.tipo_cancha}</td>
+                    <td className="border p-2">{court.veces_reservada}</td>
                 </tr>
-                ))} */}
+                ))}
               </tbody>
             </table>
           </div>
@@ -102,7 +102,7 @@ export default function CourtsReport() {
           <h2 className="text-center font-semibold mb-4">Canchas mas rentadas</h2>
           {bookingCourts.map((bookingCourt)=>(
             <CourtCard 
-              key={bookingCourt.id}
+              key={bookingCourt.id_court}
               id_court={bookingCourt.id_court}
               description={bookingCourt.description}
               veces_rentada = {bookingCourt.veces_rentada}

@@ -1,12 +1,12 @@
-import {  useEffect , useState } from "react";
+import { useState } from "react";
 import NavBar from "../components/NavBar";
 import useFilters from "../hooks/useFilters";
-import usersMostBookings from "../hooks/users";
+import {useUsersMostBookings, getUsersReport} from "../hooks/users";
 import UserCard from "../components/UserCard";
 
 export default function UsersReport() {
   const { schedules, allFilters, setFilters } = useFilters();
-  const { usersBookings } = usersMostBookings();
+  const { usersBookings } = useUsersMostBookings();
   const [users, setUsers] = useState([]);
 
   const handleChange = (e) => {
@@ -14,12 +14,13 @@ export default function UsersReport() {
   };
 
   const handleSearch = async () => {
-    // try {
-    //   const data = await getBookingReports(filters);
-    //   setReservas(data);
-    // } catch (error) {
-    //   console.error("Error al buscar reservas:", error);
-    // }
+    console.log("Filtros actuales:", allFilters);
+    try {
+      const data = await getUsersReport(allFilters);
+      setUsers(data);
+    } catch (error) {
+      console.error("Error al buscar users:", error);
+    }
   };
 
   return (
@@ -28,23 +29,24 @@ export default function UsersReport() {
       <div className="flex mt-4 gap-4">
         <div className="mt-[25px] w-3/4">
           <h2 className="text-xl font-semibold mb-4">Reporte de Usuarios</h2>
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <p>*Las fechas son desde: 05/10/2025 hasta: 22/10/2025</p>
+          <div className="grid grid-cols-2 gap-4 my-4">
             <input
-            name="fechaInicio"
+            name="startDate"
             type="date"
             value={allFilters.startDate}
             onChange={handleChange}
             className="border p-2"
             />
             <input
-            name="fechaFin"
+            name="endDate"
             type="date"
             value={allFilters.endDate}
             onChange={handleChange}
             className="border p-2"
             />
             <select
-            name="Horario"
+            name="schedule"
             value={allFilters.schedule}
             onChange={handleChange}
             className="border p-2"
@@ -52,13 +54,13 @@ export default function UsersReport() {
             <option value="">Horarios</option>
               {schedules.map((schedule) => (
                 <option key={schedule.nombre} value={schedule.nombre}>
-                {schedule.nombre}
+                {schedule.nombre}: {schedule.inicio}-{schedule.fin}
                 </option>
               ))}
             </select>
             <input
-            name="cant"
-            placeholder="Cantidad de reservas minimas"
+            name="cantBooking"
+            placeholder="Cantidad de reservas minimas (ej: 1)"
             value={allFilters.cantBooking}
             onChange={handleChange}
             className="border p-2"
@@ -80,12 +82,10 @@ export default function UsersReport() {
               </thead>
               <tbody>
                 {users.map((user) => (
-                <tr key={user.id_booking}>
-                    <td className="border p-2">
-                    {user.usuario_nombre} {user.usuario_apellido}
-                    </td>
-                    <td className="border p-2">{user.booking_date}</td>
-                    <td className="border p-2">{user.status}</td>
+                <tr key={user.name}>
+                    <td className="border p-2">{user.name}</td>
+                    <td className="border p-2">{user.cantidad_reservas}</td>
+                    <td className="border p-2">{user.cancha_preferida}</td>
                 </tr>
                 ))}
               </tbody>
@@ -97,7 +97,7 @@ export default function UsersReport() {
           <h2 className="text-center font-semibold mb-4">Usuarios con mas reservas</h2>
           {usersBookings.map((userBooking)=>(
             <UserCard 
-              key={userBooking.id}
+              key={userBooking.name}
               name={userBooking.name}
               total_reservas = {userBooking.total_reservas}
             />

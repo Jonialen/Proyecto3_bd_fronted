@@ -15,7 +15,6 @@ function BookingsReport() {
   };
 
   const handleSearch = async () => {
-    console.log("Filtros actuales:", allFilters);
     try {
       const data = await getBookingReport(allFilters);
       setBookings(data);
