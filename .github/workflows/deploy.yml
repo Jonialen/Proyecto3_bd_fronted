@@ -43,5 +43,5 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "dist/*"
-          target: "{{ secrets.DEPLOY_PATH }}/frontend"
+          target: "${{ secrets.DEPLOY_PATH }}/frontend"
           strip_components: 1
