@@ -102,5 +102,3 @@ Este sistema permite generar **5 reportes interactivos** con filtros personaliza
     ```bash
     npm run dev
 Esto normalmente se abrira en tu navegador en: http://localhost:5173
-
->>>>>>> 2672aaba9bee1395cb77bc90382bd355a5876a2f
