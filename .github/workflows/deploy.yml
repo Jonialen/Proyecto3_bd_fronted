@@ -34,7 +34,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo rm -rf /home/azureuser/proyectoBD/frontend/*
+            sudo rm -rf ${{ secrets.DEPLOY_PATH }}/frontend/*
 
       - name: Copy files via SSH
         uses: appleboy/scp-action@v0.1.7
@@ -43,5 +43,5 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "dist/*"
-          target: "/home/azureuser/proyectoBD/frontend"
+          target: "{{ secrets.DEPLOY_PATH }}/frontend"
           strip_components: 1
