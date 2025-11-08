@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Proyecto3_bd_frontend
 
 Este es el frontend para el sistema de reservas de canchas deportivas. Es una aplicación de una sola página (SPA) construida con React.
