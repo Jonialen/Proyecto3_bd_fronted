@@ -1,25 +1,37 @@
-import bookingsByPromotion from "../hooks/promotions"
-import {  useEffect , useState } from "react";
+import {useBookingsByPromotion, getCantPromoReport, getPromotionsReport} from "../hooks/promotions"
+import { useState } from "react";
 import PromoCard from "../components/PromoCard";
 import useFilters from "../hooks/useFilters";
 import NavBar from "../components/NavBar";
 
 export default function PromotionsReport() {
-  const {bookingPromotion} = bookingsByPromotion();
+  const {bookingPromotion} = useBookingsByPromotion();
   const {promos, allFilters, setFilters } = useFilters();
+  const [promotions, setPromotions] = useState([]);
+  const [cantPromos, setCantPromos] = useState([]);
 
   const handleChange = (e) => {
     setFilters({ ...allFilters, [e.target.name]: e.target.value });
   };
   
-  const handleSearch = async () => {
-      // try {
-      //   const data = await getBookingReports(filters);
-      //   setReservas(data);
-      // } catch (error) {
-      //   console.error("Error al buscar reservas:", error);
-      // }
+  const handleSearch1 = async () => {
+    try {
+      const data = await getCantPromoReport(allFilters);
+      setCantPromos(data);
+    } catch (error) {
+      console.error("Error al buscar cant:", error);
+    }
   };
+
+  const handleSearch2 = async () => {
+      try {
+        const data = await getPromotionsReport(allFilters);
+        setPromotions(data);
+      } catch (error) {
+        console.error("Error al buscar promos:", error);
+      }
+  };
+
 
   return (
     <div className="m-[25px]">
@@ -27,9 +39,10 @@ export default function PromotionsReport() {
       <div className="flex mt-4 gap-4">
         <div className="mt-[25px] w-3/4">
           <h2 className="text-xl font-semibold mb-4">Reporte de Promociones</h2>
-          <div className="flex gap-4 mb-4">
+          <p>Reporte para saber cuantas veces el usuario aplico promociones</p>
+          <div className="flex gap-4 my-4">
             <select
-              name="tipoPromocion"
+              name="promoName"
               value={allFilters.promoName}
               onChange={handleChange}
               className="border p-2 w-1/3"
@@ -41,7 +54,7 @@ export default function PromotionsReport() {
                   </option>
                 ))}
             </select>
-            <button onClick={handleSearch}
+            <button onClick={handleSearch1}
               className="bg-[#34392d] text-white px-4 py-2 rounded">Buscar
             </button>
           </div>
@@ -57,36 +70,35 @@ export default function PromotionsReport() {
                 </tr>
               </thead>
               <tbody>
-                {/* {bookings.map((booking) => (
-                <tr key={booking.id_booking}>
-                    <td className="border p-2">
-                    {booking.usuario_nombre} {booking.usuario_apellido}
-                    </td>
-                    <td className="border p-2">{booking.booking_date}</td>
-                    <td className="border p-2">{booking.status}</td>
-                    <td className="border p-2">{booking.tipo_cancha}</td>
+                {cantPromos.map((cant) => (
+                <tr key={cant.id_user}>
+                    <td className="border p-2">{cant.id_user}</td>
+                    <td className="border p-2">{cant.promocion}</td>
+                    <td className="border p-2">{cant.cant_usada}</td>
                 </tr>
-                ))} */}
+                ))}
               </tbody>
             </table>
           </div>
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <p>Reporte para saber en que reservas se aplico y cuanto de descuento</p>
+          <p>*Las fechas son desde: 05/10/2025 hasta: 22/10/2025</p>
+          <div className="grid grid-cols-2 gap-4 my-4">
               <input
-              name="fechaInicio"
+              name="startDate"
               type="date"
               value={allFilters.startDate}
               onChange={handleChange}
               className="border p-2"
               />
               <input
-              name="fechaFin"
+              name="endDate"
               type="date"
               value={allFilters.endDate}
               onChange={handleChange}
               className="border p-2"
               />
               <select
-              name="tipoPromocion"
+              name="promoName"
               value={allFilters.promoName}
               onChange={handleChange}
               className="border p-2"
@@ -99,7 +111,7 @@ export default function PromotionsReport() {
                 ))}
               </select>
           </div>
-          <button onClick={handleSearch}
+          <button onClick={handleSearch2}
               className="bg-[#34392d] text-white px-4 py-2 rounded">Buscar
           </button>
           {/* Tabla de resultados */}
@@ -114,16 +126,13 @@ export default function PromotionsReport() {
                 </tr>
               </thead>
               <tbody>
-                {/* {bookings.map((booking) => (
-                <tr key={booking.id_booking}>
-                    <td className="border p-2">
-                    {booking.usuario_nombre} {booking.usuario_apellido}
-                    </td>
-                    <td className="border p-2">{booking.booking_date}</td>
-                    <td className="border p-2">{booking.status}</td>
-                    <td className="border p-2">{booking.tipo_cancha}</td>
+                {promotions.map((promo) => (
+                <tr key={promo.id_reserva}>
+                    <td className="border p-2">{promo.nombre_usuario}</td>
+                    <td className="border p-2">{promo.id_reserva}</td>
+                    <td className="border p-2">{promo.porcentaje_desc}</td>
                 </tr>
-                ))} */}
+                ))}
               </tbody>
             </table>
           </div>

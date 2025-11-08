@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { getBookingsByPromotion } from '../services/Requests';
+import { getBookingsByPromotion, getCantBooking, getPromosApplied } from '../services/Requests';
 
-export default function bookingsByPromotion() {
+export function useBookingsByPromotion() {
     const [bookingPromotion, setBookingPromotion] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -15,3 +15,23 @@ export default function bookingsByPromotion() {
     
       return { bookingPromotion, loading, error };
 }
+
+export async function getCantPromoReport(filters) {
+    try {
+      const data = await getCantBooking(filters);
+      return data;
+    } catch (error) {
+      console.error("Error al buscar cant:", error);
+      return [];
+    }
+}
+
+export async function getPromotionsReport(filters) {
+    try {
+      const data = await getPromosApplied(filters);
+      return data;
+    } catch (error) {
+      console.error("Error al buscar promos:", error);
+      return [];
+    }
+} 

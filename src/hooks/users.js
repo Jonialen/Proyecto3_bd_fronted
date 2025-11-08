@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { getUsersMostBookings } from '../services/Requests';
+import { getUsersMostBookings, getUsers } from '../services/Requests';
 
-export default function usersMostBookings() {
+export function useUsersMostBookings() {
     const [usersBookings, setUsersBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -14,4 +14,15 @@ export default function usersMostBookings() {
     }, []);
     
       return { usersBookings, loading, error };
+}
+
+
+export async function getUsersReport(filters) {
+    try {
+      const data = await getUsers(filters);
+      return data;
+    } catch (error) {
+      console.error("Error al buscar usuarios:", error);
+      return [];
+    }
 }

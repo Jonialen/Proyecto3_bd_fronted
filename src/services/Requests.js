@@ -116,29 +116,43 @@ export const getRevenues = async (filters) => {
   }
 }
 
-export const getUsers = async () => {
+export const getUsers = async (filters) => {
   try {
-    const response = await axios.get('/usuarios'); 
-    return response.data.data
+    const params = {};
+    if (filters.startDate?.trim()) params.fecha_inicio = filters.startDate;
+    if (filters.endDate?.trim()) params.fecha_fin = filters.endDate;
+    if (filters.schedule?.trim()) params.horario_dia = filters.schedule;
+    if (filters.cantBooking?.trim()) params.min_reservas = parseInt(filters.cantBooking, 10);
+
+    const response = await axios.get('/usuarios', {params}); 
+    return response.data.data 
   } catch (error) {
     console.error('Error al obtener usuarios:', error);
     throw error;
   }
 }
 
-export const getCantBooking = async () => {
+export const getCantBooking = async (filters) => {
   try {
-    const response = await axios.get('/cuantas-veces'); 
+    const params = {};
+    if (filters.promoName?.trim()) params.nombre_promocion = filters.promoName;
+
+    const response = await axios.get('/cuantas-veces', {params}); 
     return response.data.data
   } catch (error) {
-    console.error('Error al obtener cuantas veces:', error);
+    console.error('Error al obtener cuantas veces:', error); 
     throw error;
   }
 }
 
-export const getPromosApplied = async () => {
+export const getPromosApplied = async (filters) => {
   try {
-    const response = await axios.get('/promociones-aplicadas'); 
+    const params = {};
+    if (filters.startDate?.trim()) params.fecha_inicio = filters.startDate;
+    if (filters.endDate?.trim()) params.fecha_fin = filters.endDate;
+    if (filters.promoName?.trim()) params.nombre_promocion = filters.promoName;
+
+    const response = await axios.get('/promociones-aplicadas', {params}); 
     return response.data.data
   } catch (error) {
     console.error('Error al obtener promos aplicadas:', error);
@@ -146,9 +160,15 @@ export const getPromosApplied = async () => {
   }
 }
 
-export const getCourts = async () => {
+export const getCourts = async (filters) => {
   try {
-    const response = await axios.get('/disponibilidad-canchas'); 
+    const params = {};
+    if (filters.startDate?.trim()) params.fecha_inicio = filters.startDate;
+    if (filters.endDate?.trim()) params.fecha_fin = filters.endDate;
+    if (filters.schedule?.trim()) params.horario_dia = filters.schedule;
+    if (filters.courtTypes?.trim()) params.tipo_cancha = parseInt(filters.courtTypes, 10);
+
+    const response = await axios.get('/disponibilidad-canchas', {params}); 
     return response.data.data
   } catch (error) {
     console.error('Error al obtener canchas:', error);
